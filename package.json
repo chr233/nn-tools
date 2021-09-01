@@ -1,0 +1,329 @@
+{
+	"publisher": "Chr",
+	"icon": "resources/icon.png",
+	"name": "nn-tools",
+	"displayName": "Naninovel脚本片段管理器",
+	"description": "Naninovel脚本片段管理器",
+	"version": "0.0.1",
+	"license": "AGPL-3.0",
+	"repository": "https://github.com/chr233/nn-tools",
+	"homepage": "https://blog.chrxw.com/archives/2021/09/02/1612.html",
+	"keywords": [
+		"naninovel",
+		"naninovel-tools",
+		"naninovel-editor"
+	],
+	"engines": {
+		"vscode": "^1.59.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"workspaceContains:**/*.nani",
+		"onView:setting",
+		"onView:items",
+		"onView:favorite"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"viewsWelcome": [
+			{
+				"view": "items",
+				"contents": "项目列表是空的, 需要先将配置文件丢进配置文件夹, 更多参见[帮助文档](https://blog.chrxw.com/archives/2021/09/02/1612.html)\n[配置文件夹路径](command:nnToolsTab.opendir)\n[重载配置文件](command:nnToolsTab.reload)"
+			},
+			{
+				"view": "favorite",
+				"contents": "收藏夹是空的,右键单击命令可以添加收藏.\n也可以右键收藏夹添加新命令."
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "nnToolsTab",
+					"title": "NaniNovel编辑器",
+					"icon": "resources/menu.svg"
+				}
+			]
+		},
+		"views": {
+			"nnToolsTab": [
+				{
+					"id": "items",
+					"name": "项目"
+				},
+				{
+					"id": "favorite",
+					"name": "收藏夹"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "nnToolsTab.reloadItem",
+					"when": "view == items",
+					"group": "navigation"
+				},
+				{
+					"command": "nnToolsTab.openDir",
+					"when": "view == items"
+				},
+				{
+					"command": "nnToolsTab.reloadFavo",
+					"when": "view == favorite",
+					"group": "navigation@2"
+				},
+				{
+					"command": "nnToolsTab.addItem",
+					"when": "view == favorite",
+					"group": "navigation@1"
+				},
+				{
+					"command": "nnToolsTab.addItem",
+					"when": "view == favorite",
+					"group": "a"
+				},
+				{
+					"command": "nnToolsTab.exportFavorite",
+					"when": "view == favorite",
+					"group": "b"
+				},
+				{
+					"command": "nnToolsTab.delAllFavorite",
+					"when": "view == favorite",
+					"group": "c"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "nnToolsTab.insertItem",
+					"when": "viewItem == cfgItem",
+					"group": "inline"
+				},
+				{
+					"command": "nnToolsTab.editArgvI",
+					"when": "view == items && viewItem == cfgArgv",
+					"group": "inline"
+				},
+				{
+					"command": "nnToolsTab.editArgvF",
+					"when": "view == favorite && viewItem == cfgArgv",
+					"group": "inline"
+				},
+				{
+					"command": "nnToolsTab.editFileInfo",
+					"when": "viewItem == cfgRoot",
+					"group": "a"
+				},
+				{
+					"command": "nnToolsTab.editItemI",
+					"when": "view == items && viewItem == cfgItem",
+					"group": "a"
+				},
+				{
+					"command": "nnToolsTab.editItemF",
+					"when": "view == favorite && viewItem == cfgItem",
+					"group": "a"
+				},
+				{
+					"command": "nnToolsTab.addFavorite",
+					"when": "view == items && viewItem == cfgItem",
+					"group": "b"
+				},
+				{
+					"command": "nnToolsTab.delFavorite",
+					"when": "view == favorite && viewItem == cfgItem",
+					"group": "b"
+				},
+				{
+					"command": "nnToolsTab.importFavorite",
+					"when": "view == items && viewItem == cfgRoot",
+					"group": "c"
+				},
+				{
+					"command": "nnToolsTab.addArgvI",
+					"when": "view == items && viewItem == cfgItem",
+					"group": "d"
+				},
+				{
+					"command": "nnToolsTab.addArgvF",
+					"when": "view == favorite && viewItem == cfgItem",
+					"group": "d"
+				},
+				{
+					"command": "nnToolsTab.editArgvI",
+					"when": "view == items && viewItem == cfgArgv",
+					"group": "e"
+				},
+				{
+					"command": "nnToolsTab.delArgvI",
+					"when": "view == items && viewItem == cfgArgv",
+					"group": "f"
+				},
+				{
+					"command": "nnToolsTab.editArgvF",
+					"when": "view == favorite &&viewItem == cfgArgv",
+					"group": "e"
+				},
+				{
+					"command": "nnToolsTab.delArgvF",
+					"when": "view == favorite && viewItem == cfgArgv",
+					"group": "f"
+				},
+				{
+					"command": "nnToolsTab.delItem",
+					"when": "view == items && viewItem == cfgItem",
+					"group": "g"
+				},
+				{
+					"command": "nnToolsTab.delRoot",
+					"when": " viewItem == cfgRoot && view == items",
+					"group": "g"
+				},
+				{
+					"command": "nnToolsTab.showDoc",
+					"group": "z"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "nnToolsTab.reloadItem",
+				"title": "刷新",
+				"icon": {
+					"light": "resources/refresh.svg",
+					"dark": "resources/refresh.svg"
+				}
+			},
+			{
+				"command": "nnToolsTab.reloadFavo",
+				"title": "刷新",
+				"icon": {
+					"light": "resources/refresh.svg",
+					"dark": "resources/refresh.svg"
+				}
+			},
+			{
+				"command": "nnToolsTab.openDir",
+				"title": "显示数据文件夹"
+			},
+			{
+				"command": "nnToolsTab.addFavorite",
+				"title": "添加收藏"
+			},
+			{
+				"command": "nnToolsTab.delFavorite",
+				"title": "删除收藏"
+			},
+			{
+				"command": "nnToolsTab.delAllFavorite",
+				"title": "清空收藏"
+			},
+			{
+				"command": "nnToolsTab.exportFavorite",
+				"title": "导出收藏"
+			},
+			{
+				"command": "nnToolsTab.importFavorite",
+				"title": "导入收藏"
+			},
+			{
+				"command": "nnToolsTab.showDoc",
+				"title": "查看说明"
+			},
+			{
+				"command": "nnToolsTab.editFileInfo",
+				"title": "修改信息"
+			},
+			{
+				"command": "nnToolsTab.insertItem",
+				"title": "快速插入",
+				"icon": {
+					"light": "resources/arrow-right-circle.svg",
+					"dark": "resources/arrow-right-circle.svg"
+				}
+			},
+			{
+				"command": "nnToolsTab.editItemI",
+				"title": "修改命令"
+			},
+			{
+				"command": "nnToolsTab.editItemF",
+				"title": "修改命令"
+			},
+			{
+				"command": "nnToolsTab.addItem",
+				"title": "创建命令",
+				"icon": {
+					"light": "resources/add.svg",
+					"dark": "resources/add.svg"
+				}
+			},
+			{
+				"command": "nnToolsTab.delItem",
+				"title": "删除命令"
+			},
+			{
+				"command": "nnToolsTab.delRoot",
+				"title": "删除分组"
+			},
+			{
+				"command": "nnToolsTab.editArgvI",
+				"title": "修改参数",
+				"icon": {
+					"light": "resources/edit.svg",
+					"dark": "resources/edit.svg"
+				}
+			},
+			{
+				"command": "nnToolsTab.editArgvF",
+				"title": "修改参数",
+				"icon": {
+					"light": "resources/edit.svg",
+					"dark": "resources/edit.svg"
+				}
+			},
+			{
+				"command": "nnToolsTab.addArgvI",
+				"title": "添加参数"
+			},
+			{
+				"command": "nnToolsTab.delArgvI",
+				"title": "删除参数"
+			},
+			{
+				"command": "nnToolsTab.addArgvF",
+				"title": "添加参数"
+			},
+			{
+				"command": "nnToolsTab.delArgvF",
+				"title": "删除参数"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.2.2",
+		"@types/node": "14.x",
+		"@types/vscode": "^1.59.0",
+		"@typescript-eslint/eslint-plugin": "^4.26.0",
+		"@typescript-eslint/parser": "^4.26.0",
+		"eslint": "^7.27.0",
+		"glob": "^7.1.7",
+		"mocha": "^8.4.0",
+		"typescript": "^4.3.2",
+		"vscode-test": "^1.5.2"
+	},
+	"dependencies": {
+		"jsonc-parser": "^3.0.0"
+	}
+}
